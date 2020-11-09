@@ -1,9 +1,18 @@
-enum  StackItem {
+pub enum StackItem {
     Number(i32),
     Operation(Operation)
 }
 
-enum Operation {
+impl StackItem {
+    pub fn unwrap(&self) -> i32 {
+        match self {
+            StackItem::Number(x) => x.to_owned(),
+            _ => panic!("unwrap called on non-numeric value")
+        }
+    }
+}
+
+pub enum Operation {
     Add,
     Multiply,
     Subtract,
@@ -11,31 +20,35 @@ enum Operation {
 }
 
 pub struct Stack {
-    pub stack: Vec<String>,
+    pub stack: Vec<StackItem>,
 }
 
 impl Stack {
     pub fn new(input: &str) -> Stack {
         Stack {
-            stack: input.split(" ").map(|x| x.to_string()).collect::<Vec<String>>(),
+            stack: input.split(" ").map(|x| {
+                match x {
+                    "+" => StackItem::Operation(Operation::Add),
+                    "-" => StackItem::Operation(Operation::Subtract),
+                    "*" => StackItem::Operation(Operation::Multiply),
+                    "/" => StackItem::Operation(Operation::Subtract),
+                    _ => StackItem::Number(x.parse::<i32>().unwrap()),
+                }
+            }).collect::<Vec<StackItem>>(),
         }
     }
 
     pub fn eval(&mut self) -> i32 {
         while self.stack.len() > 1 {
-            let right: i32 = self.stack.pop().unwrap().parse().unwrap();
-            let left: i32 = self.stack.pop().unwrap().parse().unwrap();
+            let right: StackItem = self.stack.pop().unwrap();
+            let left: StackItem = self.stack.pop().unwrap();
             let operation = self.stack.pop().unwrap();
-            let stack_tail = match operation.as_str() {
-                "+" => left + right,
-                "-" => left - right,
-                "*" => left * right,
-                "/" => left / right,
+            let stack_tail = match operation {
                 _ => panic!("operator not supported")
             };
-            self.stack.push(stack_tail.to_string());
+            self.stack.push(stack_tail);
         }
-        return self.stack.pop().unwrap().parse().unwrap();
+        return self.stack.pop().unwrap().unwrap();
     }
 }
 
