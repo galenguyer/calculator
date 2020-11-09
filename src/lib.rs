@@ -1,3 +1,15 @@
+enum  StackItem {
+    Number(i32),
+    Operation(Operation)
+}
+
+enum Operation {
+    Add,
+    Multiply,
+    Subtract,
+    Divide
+}
+
 pub struct Stack {
     pub stack: Vec<String>,
 }
