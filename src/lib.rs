@@ -1,13 +1,13 @@
 pub enum StackItem {
     Number(i32),
-    Operation(Operation)
+    Operation(Operation),
 }
 
 impl StackItem {
     pub fn unwrap(&self) -> i32 {
         match self {
             StackItem::Number(x) => x.to_owned(),
-            _ => panic!("unwrap called on non-numeric value")
+            _ => panic!("unwrap called on non-numeric value"),
         }
     }
 }
@@ -16,7 +16,7 @@ pub enum Operation {
     Add,
     Multiply,
     Subtract,
-    Divide
+    Divide,
 }
 
 pub struct Stack {
@@ -26,15 +26,16 @@ pub struct Stack {
 impl Stack {
     pub fn new(input: &str) -> Stack {
         Stack {
-            stack: input.split(" ").map(|x| {
-                match x {
+            stack: input
+                .split(" ")
+                .map(|x| match x {
                     "+" => StackItem::Operation(Operation::Add),
                     "-" => StackItem::Operation(Operation::Subtract),
                     "*" => StackItem::Operation(Operation::Multiply),
                     "/" => StackItem::Operation(Operation::Subtract),
                     _ => StackItem::Number(x.parse::<i32>().unwrap()),
-                }
-            }).collect::<Vec<StackItem>>(),
+                })
+                .collect::<Vec<StackItem>>(),
         }
     }
 
@@ -46,11 +47,10 @@ impl Stack {
                 StackItem::Number(x) => {
                     if self.stack.len() == 0 {
                         return x;
-                    }
-                    else {
+                    } else {
                         queue.push(x);
                     }
-                },
+                }
                 StackItem::Operation(op) => {
                     while queue.len() > 1 {
                         let left = queue.pop().unwrap();
@@ -65,7 +65,6 @@ impl Stack {
                     self.stack.push(StackItem::Number(queue.pop().unwrap()))
                 }
             };
-            
         }
         return self.stack.pop().unwrap().unwrap();
     }
@@ -106,10 +105,9 @@ fn complex() {
     assert_eq!(result, 11);
 }
 
-
 #[test]
 fn very_complex() {
     let mut stack: Stack = Stack::new("+ 3 * 4 2 3");
     let result: i32 = stack.eval();
-    assert_eq!(result,27);
+    assert_eq!(result, 27);
 }
