@@ -55,3 +55,10 @@ fn division() {
     assert_eq!(result, 2);
 }
 
+#[test]
+fn complex() {
+    let args = vec!["+", "3", "*", "4", "2"].iter().map(|x| x.to_string()).collect::<Vec<String>>();
+    let mut stack: Stack = Stack::new(args);
+    let result: i32 = stack.eval();
+    assert_eq!(result, 11);
+}
