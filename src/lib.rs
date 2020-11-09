@@ -1,16 +1,17 @@
 pub struct Stack {
-    pub stack: Vec<i32>,
+    pub stack: Vec<String>,
 }
 
 impl Stack {
-    pub fn new(input: Vec<i32>) -> Stack {
+    pub fn new(input: Vec<String>) -> Stack {
         Stack {
             stack: input,
         }
     }
+
 }
 
 #[test]
 fn initializes() {
-    let _ = Stack::new(vec![0]);
+    let _ = Stack::new(vec!["0".to_string()]);
 }
