@@ -10,17 +10,20 @@ impl Stack {
     }
 
     pub fn eval(&mut self) -> i32 {
-        let right: i32 = self.stack.pop().unwrap().parse().unwrap();
-        let left: i32 = self.stack.pop().unwrap().parse().unwrap();
-        let operation = self.stack.pop().unwrap();
-        let stack_tail = match operation.as_str() {
-            "+" => left + right,
-            "-" => left - right,
-            "*" => left * right,
-            "/" => left / right,
-            _ => panic!("operator not supported")
-        };
-        return stack_tail;
+        while self.stack.len() > 1 {
+            let right: i32 = self.stack.pop().unwrap().parse().unwrap();
+            let left: i32 = self.stack.pop().unwrap().parse().unwrap();
+            let operation = self.stack.pop().unwrap();
+            let stack_tail = match operation.as_str() {
+                "+" => left + right,
+                "-" => left - right,
+                "*" => left * right,
+                "/" => left / right,
+                _ => panic!("operator not supported")
+            };
+            self.stack.push(stack_tail.to_string());
+        }
+        return self.stack.pop().unwrap().parse().unwrap();
     }
 }
 
