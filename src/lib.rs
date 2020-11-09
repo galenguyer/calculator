@@ -15,9 +15,9 @@ pub struct Stack {
 }
 
 impl Stack {
-    pub fn new(input: Vec<String>) -> Stack {
+    pub fn new(input: &str) -> Stack {
         Stack {
-            stack: input,
+            stack: input.split(" ").map(|x| x.to_string()).collect::<Vec<String>>(),
         }
     }
 
@@ -41,36 +41,35 @@ impl Stack {
 
 #[test]
 fn addition() {
-    let mut stack = Stack::new(vec!["+".to_string(), "1".to_string(), "3".to_string()]);
+    let mut stack = Stack::new("+ 1 3");
     let result: i32 = stack.eval();
     assert_eq!(result, 4);
 }
 
 #[test]
 fn subtraction() {
-    let mut stack = Stack::new(vec!["-".to_string(), "6".to_string(), "3".to_string()]);
+    let mut stack = Stack::new("- 6 3");
     let result: i32 = stack.eval();
     assert_eq!(result, 3);
 }
 
 #[test]
 fn multiplication() {
-    let mut stack = Stack::new(vec!["*".to_string(), "1".to_string(), "3".to_string()]);
+    let mut stack = Stack::new("* 1 3");
     let result: i32 = stack.eval();
     assert_eq!(result, 3);
 }
 
 #[test]
 fn division() {
-    let mut stack = Stack::new(vec!["/".to_string(), "4".to_string(), "2".to_string()]);
+    let mut stack = Stack::new("/ 4 2");
     let result: i32 = stack.eval();
     assert_eq!(result, 2);
 }
 
 #[test]
 fn complex() {
-    let args = vec!["+", "3", "*", "4", "2"].iter().map(|x| x.to_string()).collect::<Vec<String>>();
-    let mut stack: Stack = Stack::new(args);
+    let mut stack: Stack = Stack::new("+ 3 * 4 2");
     let result: i32 = stack.eval();
     assert_eq!(result, 11);
 }
@@ -78,8 +77,7 @@ fn complex() {
 
 #[test]
 fn very_complex() {
-    let args = vec!["+", "3", "*", "4", "2", "3"].iter().map(|x| x.to_string()).collect::<Vec<String>>();
-    let mut stack: Stack = Stack::new(args);
+    let mut stack: Stack = Stack::new("+ 3 * 4 2 3");
     let result: i32 = stack.eval();
     assert_eq!(result,27);
 }
