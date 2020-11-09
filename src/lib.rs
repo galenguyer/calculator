@@ -62,3 +62,12 @@ fn complex() {
     let result: i32 = stack.eval();
     assert_eq!(result, 11);
 }
+
+
+#[test]
+fn very_complex() {
+    let args = vec!["+", "3", "*", "4", "2", "3"].iter().map(|x| x.to_string()).collect::<Vec<String>>();
+    let mut stack: Stack = Stack::new(args);
+    let result: i32 = stack.eval();
+    assert_eq!(result,27);
+}
