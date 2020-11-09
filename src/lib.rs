@@ -40,13 +40,17 @@ impl Stack {
 
     pub fn eval(&mut self) -> i32 {
         while self.stack.len() > 1 {
-            let right: StackItem = self.stack.pop().unwrap();
-            let left: StackItem = self.stack.pop().unwrap();
+            let right: i32 = self.stack.pop().unwrap().unwrap();
+            let left: i32 = self.stack.pop().unwrap().unwrap();
             let operation = self.stack.pop().unwrap();
             let stack_tail = match operation {
+                StackItem::Operation(Operation::Add) => (left + right),
+                StackItem::Operation(Operation::Subtract) => (left - right),
+                StackItem::Operation(Operation::Multiply) => (left * right),
+                StackItem::Operation(Operation::Divide) => (left / right),
                 _ => panic!("operator not supported")
             };
-            self.stack.push(stack_tail);
+            self.stack.push(StackItem::Number(stack_tail));
         }
         return self.stack.pop().unwrap().unwrap();
     }
