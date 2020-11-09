@@ -32,7 +32,7 @@ impl Stack {
                     "+" => StackItem::Operation(Operation::Add),
                     "-" => StackItem::Operation(Operation::Subtract),
                     "*" => StackItem::Operation(Operation::Multiply),
-                    "/" => StackItem::Operation(Operation::Subtract),
+                    "/" => StackItem::Operation(Operation::Divide),
                     _ => StackItem::Number(x.parse::<i32>().unwrap()),
                 })
                 .collect::<Vec<StackItem>>(),
@@ -93,9 +93,9 @@ fn multiplication() {
 
 #[test]
 fn division() {
-    let mut stack = Stack::new("/ 4 2");
+    let mut stack = Stack::new("/ 6 2");
     let result: i32 = stack.eval();
-    assert_eq!(result, 2);
+    assert_eq!(result, 3);
 }
 
 #[test]
