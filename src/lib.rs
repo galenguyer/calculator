@@ -13,5 +13,5 @@ impl Stack {
 
 #[test]
 fn initializes() {
-    let _ = Stack::new(vec!["0".to_string()]);
+    let _ = Stack::new(vec!["+".to_string(), "1".to_string(), "3".to_string()]);
 }
