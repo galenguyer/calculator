@@ -1,4 +1,3 @@
-#[derive(Debug)]
 pub enum StackItem {
     Number(i32),
     Operation(Operation)
@@ -13,7 +12,6 @@ impl StackItem {
     }
 }
 
-#[derive(Debug)]
 pub enum Operation {
     Add,
     Multiply,
@@ -43,10 +41,7 @@ impl Stack {
     pub fn eval(&mut self) -> i32 {
         let mut queue: Vec<i32> = Vec::<i32>::new();
         while self.stack.len() > 0 {
-            println!("queue: {:?}", queue);
-            println!("stack: {:?}", self.stack);
             let operation = self.stack.pop().unwrap();
-            println!("matching {:?}", operation);
             match operation {
                 StackItem::Number(x) => {
                     if self.stack.len() == 0 {
