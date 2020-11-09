@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum StackItem {
     Number(i32),
     Operation(Operation)
@@ -12,6 +13,7 @@ impl StackItem {
     }
 }
 
+#[derive(Debug)]
 pub enum Operation {
     Add,
     Multiply,
@@ -39,18 +41,36 @@ impl Stack {
     }
 
     pub fn eval(&mut self) -> i32 {
-        while self.stack.len() > 1 {
-            let right: i32 = self.stack.pop().unwrap().unwrap();
-            let left: i32 = self.stack.pop().unwrap().unwrap();
+        let mut queue: Vec<i32> = Vec::<i32>::new();
+        while self.stack.len() > 0 {
+            println!("queue: {:?}", queue);
+            println!("stack: {:?}", self.stack);
             let operation = self.stack.pop().unwrap();
-            let stack_tail = match operation {
-                StackItem::Operation(Operation::Add) => (left + right),
-                StackItem::Operation(Operation::Subtract) => (left - right),
-                StackItem::Operation(Operation::Multiply) => (left * right),
-                StackItem::Operation(Operation::Divide) => (left / right),
-                _ => panic!("operator not supported")
+            println!("matching {:?}", operation);
+            match operation {
+                StackItem::Number(x) => {
+                    if self.stack.len() == 0 {
+                        return x;
+                    }
+                    else {
+                        queue.push(x);
+                    }
+                },
+                StackItem::Operation(op) => {
+                    while queue.len() > 1 {
+                        let left = queue.pop().unwrap();
+                        let right = queue.pop().unwrap();
+                        match op {
+                            Operation::Add => queue.push(left + right),
+                            Operation::Subtract => queue.push(left - right),
+                            Operation::Multiply => queue.push(left * right),
+                            Operation::Divide => queue.push(left / right),
+                        }
+                    }
+                    self.stack.push(StackItem::Number(queue.pop().unwrap()))
+                }
             };
-            self.stack.push(StackItem::Number(stack_tail));
+            
         }
         return self.stack.pop().unwrap().unwrap();
     }
